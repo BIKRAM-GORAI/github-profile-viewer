@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GitHub Profile Viewer</title>
+
+  <!-- Link CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h1>GitHub Profile Viewer</h1>
+
+  <!-- Input for GitHub username -->
+  <input
+    type="text"
+    id="username"
+    placeholder="Enter GitHub username"
+  />
+
+  <!-- Search button -->
+  <button id="searchBtn">Search</button>
+
+  <!-- Loading indicator -->
+  <p id="loading" style="display: none;">Loading...</p>
+
+  <!-- Error message -->
+  <p id="error" class="error"></p>
+
+  <!-- Profile result -->
+  <div id="profile"></div>
+
+  <!-- Link JS -->
+  <script src="script.js"></script>
+</body>
+</html>
