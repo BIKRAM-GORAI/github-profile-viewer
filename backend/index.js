@@ -4,30 +4,25 @@ const cors = require("cors");
 const app = express();
 const PORT = 5000;
 
-
 app.use(cors());
 app.use(express.json());
 
-let items = [
-  { id: 1, name: "Sample Item" }
-];
+app.get("/api/github/:username", async (req, res) => {//here i will receive the request send from frontend
+  const { username } = req.params;//
 
-app.post("/api/items", (req, res) => {
+  try {
+    const response = await fetch(
+      `https://api.github.com/users/${username}`
+    );
 
-  const { name } = req.body;
-
-  if (!name) {
-    return res.status(400).json({ error: "Name is required" });
+    if (!response.ok) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "GitHub API cannot be connected" });
   }
-
-  const newItem = {
-    id: Date.now(),
-    name
-  };
-
-  items.push(newItem);
-
-  res.status(201).json(newItem);
 });
 
 app.listen(PORT, () => {
