@@ -1,17 +1,18 @@
-// Get DOM elements
+// Get references to HTML elements
 const usernameInput = document.getElementById("username");
 const searchBtn = document.getElementById("searchBtn");
-const loadingText = document.getElementById("loading");
-const errorText = document.getElementById("error");
 const profileDiv = document.getElementById("profile");
+const errorText = document.getElementById("error");
+const loadingText = document.getElementById("loading");
 
-// Button click event
+// Add click event to button
 searchBtn.addEventListener("click", fetchProfile);
 
-// Function to fetch GitHub profile
+
+// ✅ NEW FIXED LOGIC (Frontend → Backend → GitHub)
 async function fetchProfile() {
 
-  // Get and clean username
+  // Get username value
   const username = usernameInput.value.trim();
 
   // Input validation
@@ -21,34 +22,37 @@ async function fetchProfile() {
     return;
   }
 
-  // Reset UI
+  // Reset UI states
   errorText.textContent = "";
   profileDiv.innerHTML = "";
   loadingText.style.display = "block";
 
   try {
-    // FRONTEND directly calls GitHub API
+    // Frontend calls backend API
     const response = await fetch(
-      `https://api.github.com/users/${username}`
+      `http://localhost:5000/api/github/${username}`
     );
 
-    // Handle invalid username
+    // Handle error response
     if (!response.ok) {
-      throw new Error("GitHub user not found");
+      throw new Error("User not found");
     }
 
+    // Convert response to JSON
     const data = await response.json();
 
-    // Display profile
+    // Display user profile
     profileDiv.innerHTML = `
-      <img src="${data.avatar_url}" width="100" />
+      <img src="${data.avatar_url}" />
       <p><strong>Name:</strong> ${data.name || "Not available"}</p>
       <p><strong>Public Repos:</strong> ${data.public_repos}</p>
     `;
 
   } catch (error) {
+    // Show error message
     errorText.textContent = error.message;
   } finally {
+    // Hide loading text
     loadingText.style.display = "none";
   }
 }
